@@ -8,11 +8,11 @@ from nltk.corpus import stopwords
 
 # Paths for all resources for the bot.
 RESOURCE_PATH = {
-    'INTENT_RECOGNIZER': 'intent_recognizer.pkl',
-    'TAG_CLASSIFIER': 'tag_classifier.pkl',
-    'TFIDF_VECTORIZER': 'tfidf_vectorizer.pkl',
-    'THREAD_EMBEDDINGS_FOLDER': 'thread_embeddings_by_tags',
-    'WORD_EMBEDDINGS': 'word_embeddings.tsv',
+    'INTENT_RECOGNIZER': 'data/intent_recognizer.pkl',
+    'TAG_CLASSIFIER': 'data/tag_classifier.pkl',
+    'TFIDF_VECTORIZER': 'data/tfidf_vectorizer.pkl',
+    'THREAD_EMBEDDINGS_FOLDER': 'data/thread_embeddings_by_tags',
+    'WORD_EMBEDDINGS': 'data/word_embeddings.tsv',
 }
 
 
@@ -41,27 +41,30 @@ def load_embeddings(embeddings_path):
       embeddings - dict mapping words to vectors;
       embeddings_dim - dimension of the vectors.
     """
-    
-    # Hint: you have already implemented a similar routine in the 3rd assignment.
-    # Note that here you also need to know the dimension of the loaded embeddings.
-    # When you load the embeddings, use numpy.float32 type as dtype
+    embeddings = { a[0]: np.array(a[1:], dtype=np.float32) \
+                   for a in [line.strip().split('\t') \
+                             for line in open(embeddings_path)] }
+    vect = next (iter (embeddings.values()))
+    return embeddings, len(vect)
 
-    ########################
-    #### YOUR CODE HERE ####
-    ########################
-
-        pass 
 
 def question_to_vec(question, embeddings, dim):
-    """Transforms a string to an embedding by averaging word embeddings."""
-    
-    # Hint: you have already implemented exactly this function in the 3rd assignment.
+    """
+        question: a string
+        embeddings: dict where the key is a word and a value is its' embedding
+        dim: size of the representation
 
-    ########################
-    #### YOUR CODE HERE ####
-    ########################
-
-        pass
+        result: vector representation for the question
+    """    
+    vec = np.zeros(dim)
+    n = 0
+    for word in question.split():
+        if word in embeddings:
+            vec += embeddings[word]
+            n += 1
+    if n > 1:
+        vec /= n
+    return vec
 
 
 def unpickle_file(filename):
