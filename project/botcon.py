@@ -29,6 +29,9 @@ def main():
     offset = 0
     while True:
         question = input('> ')
+        if question == '':
+            print('Good bye.')
+            return
         answer = dm.generate_answer(question)
         print(answer)
 
