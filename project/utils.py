@@ -13,6 +13,7 @@ RESOURCE_PATH = {
     'TFIDF_VECTORIZER': 'data/tfidf_vectorizer.pkl',
     'THREAD_EMBEDDINGS_FOLDER': 'data/thread_embeddings_by_tags',
     'WORD_EMBEDDINGS': 'data/word_embeddings.tsv',
+    'CHATTER_BOT': 'data/chatterbot.sqlite3',
 }
 
 
