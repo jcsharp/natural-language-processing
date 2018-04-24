@@ -43,10 +43,10 @@ class DialogueManager(object):
         self.tag_classifier = unpickle_file(paths['TAG_CLASSIFIER'])
         self.thread_ranker = ThreadRanker(paths)
 
-        self.create_chitchat_bot()
+        self.create_chitchat_bot(paths['CHATTER_BOT'])
 
 
-    def create_chitchat_bot(self):
+    def create_chitchat_bot(self, file_path):
         """Initializes self.chitchat_bot with some conversational model."""
 
         # Hint: you might want to create and train chatterbot.ChatBot here.
@@ -54,10 +54,16 @@ class DialogueManager(object):
         # "chatterbot.trainers.ChatterBotCorpusTrainer"
         # and then calling *train* function with "chatterbot.corpus.english" param
         
-        english_bot = ChatBot("Chatterbot", storage_adapter="chatterbot.storage.SQLStorageAdapter")
-        english_bot.set_trainer(ChatterBotCorpusTrainer)
-        english_bot.train("chatterbot.corpus.english")
-
+        print("Loading chit-chat...")
+        needs_training = not os.path.exists(file_path)
+        english_bot = ChatBot("Chatterbot", 
+            storage_adapter="chatterbot.storage.SQLStorageAdapter",
+            database=file_path)
+        
+        if needs_training:
+            english_bot.set_trainer(ChatterBotCorpusTrainer)
+            english_bot.train("chatterbot.corpus.english")
+        
         self.chatter = english_bot
 
        
