@@ -3,10 +3,12 @@ from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
 from utils import *
 from dialogue_manager import DialogueManager
+import re
 
 app = Flask(__name__)
 
 dm = DialogueManager(RESOURCE_PATH)
+urlre = re.compile(r"(^|[\n ])(([\w]+?://[\w\#$%&~.\-;:=,?@\[\]+]*)(/[\w\#$%&~/.\-;:=,?@\[\]+]*)?)", re.IGNORECASE | re.DOTALL)
 
 @app.route("/")
 def home():
@@ -15,7 +17,9 @@ def home():
 @app.route("/get")
 def get_bot_response():
     userText = request.args.get('msg')
-    return str(dm.generate_answer(userText))
+    answer = str(dm.generate_answer(userText))
+    answer = urlre.sub(r'\1<a href="\2" target="_blank">\2</a>', answer)
+    return answer
 
 
 if __name__ == "__main__":
