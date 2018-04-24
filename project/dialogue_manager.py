@@ -2,6 +2,7 @@ import os
 from sklearn.metrics.pairwise import pairwise_distances_argmin
 
 from chatterbot import ChatBot
+from chatterbot.trainers import ChatterBotCorpusTrainer
 from utils import *
 
 
@@ -21,14 +22,10 @@ class ThreadRanker(object):
         """
         thread_ids, thread_embeddings = self.__load_embeddings_by_tag(tag_name)
 
-        print((question, tag_name))
-        print((thread_ids.shape, thread_embeddings.shape))
-
         # HINT: you have already implemented a similar routine in the 3rd assignment.
         question_vec = question_to_vec(question, self.word_embeddings, self.embeddings_dim)
         best_thread = pairwise_distances_argmin([question_vec], thread_embeddings, metric='cosine')[0]
 
-        print(best_thread)
         return thread_ids[best_thread]
 
 
@@ -40,11 +37,14 @@ class DialogueManager(object):
         self.intent_recognizer = unpickle_file(paths['INTENT_RECOGNIZER'])
         self.tfidf_vectorizer = unpickle_file(paths['TFIDF_VECTORIZER'])
 
-        self.ANSWER_TEMPLATE = 'I think its about %s\nThis thread might help you: https://stackoverflow.com/questions/%s'
+        self.ANSWER_TEMPLATE = "I think it's about %s\nThis thread might help you: https://stackoverflow.com/questions/%s"
 
         # Goal-oriented part:
         self.tag_classifier = unpickle_file(paths['TAG_CLASSIFIER'])
         self.thread_ranker = ThreadRanker(paths)
+
+        self.create_chitchat_bot()
+
 
     def create_chitchat_bot(self):
         """Initializes self.chitchat_bot with some conversational model."""
@@ -54,10 +54,12 @@ class DialogueManager(object):
         # "chatterbot.trainers.ChatterBotCorpusTrainer"
         # and then calling *train* function with "chatterbot.corpus.english" param
         
-        ########################
-        #### YOUR CODE HERE ####
-        ########################
-        pass
+        english_bot = ChatBot("Chatterbot", storage_adapter="chatterbot.storage.SQLStorageAdapter")
+        english_bot.set_trainer(ChatterBotCorpusTrainer)
+        english_bot.train("chatterbot.corpus.english")
+
+        self.chatter = english_bot
+
        
     def generate_answer(self, question):
         """Combines stackoverflow and chitchat parts using intent recognition."""
@@ -72,7 +74,7 @@ class DialogueManager(object):
         # Chit-chat part:   
         if intent == 'dialogue':
             # Pass question to chitchat_bot to generate a response.       
-            response = "I'm not in the mood..."  #### YOUR CODE HERE ####
+            response = self.chatter.get_response(question)
             return response
         
         # Goal-oriented part:
