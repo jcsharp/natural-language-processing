@@ -1,3 +1,4 @@
+import argparse
 from flask import Flask, render_template, request
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
@@ -21,6 +22,11 @@ def get_bot_response():
     answer = urlre.sub(r'\1<a href="\2" target="_blank">\2</a>', answer)
     return answer
 
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--port', type=int, default='8080')
+    return parser.parse_args()
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8080)
+    args = parse_args()
+    app.run(host='0.0.0.0', port=args.port)
