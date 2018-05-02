@@ -102,3 +102,6 @@ ENV/
 
 # Data for assignments
 data/
+
+# VS code
+.vscode/
