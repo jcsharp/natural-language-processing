@@ -2,6 +2,7 @@ import nltk
 import pickle
 import re
 import numpy as np
+import gensim
 
 nltk.download('stopwords')
 from nltk.corpus import stopwords
@@ -42,9 +43,7 @@ def load_embeddings(embeddings_path):
       embeddings - dict mapping words to vectors;
       embeddings_dim - dimension of the vectors.
     """
-    embeddings = { a[0]: np.array(a[1:], dtype=np.float32) \
-                   for a in [line.strip().split('\t') \
-                             for line in open(embeddings_path)] }
+    embeddings = gensim.models.KeyedVectors.load_word2vec_format(embeddings_path, binary=True)
     vect = next (iter (embeddings.values()))
     return embeddings, len(vect)
 
