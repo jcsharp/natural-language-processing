@@ -37,7 +37,7 @@ class DialogueManager(object):
         self.intent_recognizer = unpickle_file(paths['INTENT_RECOGNIZER'])
         self.tfidf_vectorizer = unpickle_file(paths['TFIDF_VECTORIZER'])
 
-        self.ANSWER_TEMPLATE = "I think it's about %s\nThis thread might help you: https://stackoverflow.com/questions/%s"
+        self.ANSWER_TEMPLATE = "If this is about %s, I think this thread might help you:\nhttps://stackoverflow.com/questions/%s"
 
         # Goal-oriented part:
         self.tag_classifier = unpickle_file(paths['TAG_CLASSIFIER'])
