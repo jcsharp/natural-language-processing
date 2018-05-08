@@ -3,7 +3,7 @@ from sklearn.metrics.pairwise import pairwise_distances_argmin
 
 from chatterbot import ChatBot
 from chatterbot.trainers import ChatterBotCorpusTrainer
-from utils import *
+from utils import load_embeddings, question_to_vec, unpickle_file, text_prepare 
 
 
 class ThreadRanker(object):
