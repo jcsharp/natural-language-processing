@@ -62,7 +62,7 @@ class DialogueManager(object):
         
         if needs_training:
             english_bot.set_trainer(ChatterBotCorpusTrainer)
-            english_bot.train("chatterbot.corpus.english")
+            english_bot.train("chatterbot.corpus.english") #pylint: disable=E1102
         
         self.chatter = english_bot
 
