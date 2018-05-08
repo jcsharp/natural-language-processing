@@ -20,8 +20,8 @@ RESOURCE_PATH = {
 def text_prepare(text):
     """Performs tokenization and simple preprocessing."""
     
-    replace_by_space_re = re.compile('[/(){}\[\]\|@,;]')
-    bad_symbols_re = re.compile('[^0-9a-z #+_]')
+    replace_by_space_re = re.compile(r'[/(){}\[\]\|@,;]')
+    bad_symbols_re = re.compile(r'[^0-9a-z #+_]')
     stopwords_set = set(stopwords.words('english'))
 
     text = text.lower()
