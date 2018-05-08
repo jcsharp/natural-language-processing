@@ -1,0 +1,15 @@
+{
+    "name": "Robot Chicken",
+    "description": "",
+    "secretKey": "",
+    "services": [
+        {
+            "appId": "",
+            "id": "ea965690-52a6-11e8-8e72-0fc507eb524d",
+            "type": "endpoint",
+            "appPassword": "",
+            "endpoint": "http://localhost:9000/api/messages",
+            "name": "http://localhost:9000/api/messages"
+        }
+    ]
+}
