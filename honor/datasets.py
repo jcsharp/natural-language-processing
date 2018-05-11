@@ -244,9 +244,9 @@ class OpensubsData:
 
 def extractText(line, fast_preprocessing=True):
     if fast_preprocessing:
-        GOOD_SYMBOLS_RE = re.compile('[^0-9a-z ]')
-        REPLACE_BY_SPACE_RE = re.compile('[/(){}\[\]\|@,;#+_]')
-        REPLACE_SEVERAL_SPACES = re.compile('\s+')
+        GOOD_SYMBOLS_RE = re.compile(r'[^0-9a-z ]')
+        REPLACE_BY_SPACE_RE = re.compile(r'[/(){}\[\]\|@,;#+_]')
+        REPLACE_SEVERAL_SPACES = re.compile(r'\s+')
 
         line = line.lower()
         line = REPLACE_BY_SPACE_RE.sub(' ', line)
